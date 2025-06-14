@@ -16,6 +16,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\MarkdownEditor;
+use Filament\Tables\Columns\CheckboxColumn;
 
 class PageResource extends Resource
 {
@@ -35,9 +36,21 @@ class PageResource extends Resource
                     ->required()
                     ->maxLength(255)
                     ->unique(Page::class, 'slug', ignoreRecord: true),
+                TextInput::make('meta_description')
+                    ->label(__('admin.title.meta_description'))
+                    // ->required()
+                    ->maxLength(1024),
+                TextInput::make('meta_keywords')
+                    ->label(__('admin.title.meta_keywords'))
+                    // ->required()
+                    ->maxLength(1024),
+                    
                 MarkdownEditor::make('content'),
                 Checkbox::make('is_active')
                     ->label('Active')
+                    ->default(true),
+                Checkbox::make('is_menu')
+                    ->label(__('admin.title.is_menu'))
                     ->default(true),
 
             ])->columns(1);
@@ -54,7 +67,7 @@ class PageResource extends Resource
                 TextColumn::make('slug')
                     ->sortable()
                     ->searchable(),
-                BooleanColumn::make('is_active')
+                CheckboxColumn::make('is_active')
                     ->label('Active')
                     ->sortable()
                     ->toggleable(),
